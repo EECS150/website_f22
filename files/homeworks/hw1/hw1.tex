@@ -1,0 +1,114 @@
+\input{common}
+\begin{document}
+\def\PYZsq{\textquotesingle}
+
+\newcommand{\assignmentname}{EECS 151/251A Homework 1}
+\newcommand{\versionstamp}{Version: 1 - \DTMnow}
+
+\title{\vspace{-0.4in}\Large \bf \assignmentname \vspace{-0.1in}}
+\author{Due Friday, September 9\textsuperscript{th}, 2022 11:59PM}
+
+\date{}
+\maketitle
+
+\thispagestyle{plain}
+
+\section*{Problem 1: Dennard Scaling}
+Assuming perfect Dennard Scaling. Imagine a processor that runs at 5MHz \& 1A and dissipates 5W.
+\begin{enumerate}[label=(\alph*)]
+\item What would the power and performance be in the next technology node if transistors are 1.25x smaller? Remember units!
+
+\vspace{70mm}
+
+
+\item How would power density change in the new technology node? Why?
+
+\end{enumerate}
+\pagebreak
+\section*{Problem 2: Simplifying Circuits}
+\begin{enumerate}[label=(\alph*)]
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/circuit.png}
+\end{figure}
+\item Write out the full truth table for the circuit above.
+
+\vspace{80mm}
+
+\item By inspecting the truth table drawn in part (a), draw a simplified circuit with a minimum number of logic gates
+
+\end{enumerate}
+
+
+
+\vspace{70mm}
+
+
+\section*{Problem 3: Verilog}
+For each example, identify the error in the Verilog code and suggest a fix. You don't have to rewrite the entire Verilog unless you think that's the most succinct \& clear way to answer.
+\begin{enumerate}[label=(\alph*)]
+
+\item \begin{minted}{verilog}
+module example_one(
+	input [1:0] a,
+	input b, c,
+	output x
+);
+	always @(*) begin
+	    case (a)
+	        2'b00 : x = b;
+	        2'b01 : x = c;
+	        2'b11 : x = b & c;
+	        2'b10 : x = b | c;
+	    endcase
+	end
+endmodule
+\end{minted}
+\pagebreak
+
+\item \begin{minted}{verilog}
+module example_two(
+	input a, b, c,
+	output reg [1:0] x
+);
+    always @(*) begin
+    	if (a & b & c) begin
+    		x = 3;
+    	end
+    	else if (a & b) begin
+    		x = 2;
+    	end
+    	else if (c) begin
+    		x = 1;
+    	end
+    end
+endmodule
+\end{minted}
+\vspace{30mm}
+\item \begin{minted}{verilog}
+module example_three(
+	input [1:0] a,
+	input toggle, sel, 
+	output reg x
+);
+    always @(toggle) begin
+        if (sel) begin
+            x = a[1];
+        end
+        else if (!sel) begin
+    	x = a[0];
+        end
+    end
+endmodule
+\end{minted}
+
+\end{enumerate}
+
+
+
+
+
+\end{document}
+
