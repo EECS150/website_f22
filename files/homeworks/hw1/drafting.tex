@@ -1,0 +1,228 @@
+\input{common}
+\begin{document}
+\def\PYZsq{\textquotesingle}
+
+\newcommand{\assignmentname}{EECS 151/251A Homework 1}
+\newcommand{\versionstamp}{Version: 1 - \DTMnow}
+
+\title{\vspace{-0.4in}\Large \bf \assignmentname \vspace{-0.1in}}
+\author{Due Thursday, September 8\textsuperscript{th}, 2022 11:59PM}
+
+\date{}
+\maketitle
+
+\thispagestyle{plain}
+
+\section*{Problem 1: Dennard Scaling}
+Assuming perfect Dennard Scaling. Given a processor that runs at 5MHz and dissipates 5W, what would the power and performance be in the next technology node if transistors are 1.25x smaller? Remember units!
+
+\begin{solution}
+$\kappa = 1.25$
+
+Delay improves by 1.33, so the max frequency can be $5 \cdot 1.33 = \SI{6.66}{\giga\hertz}$.
+
+Power density remains the same, but power dissipation scales with $s^2$, so power dissipation is $40 \cdot (0.75)^2 = \SI{22.5}{\watt}$
+\end{solution}
+
+\section*{Problem 2: What's that Circuit!}
+\begin{enumerate}[label=(\alph*)]
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/mux.png}
+\caption{Circuit 1 for parts (a) (b) (c)}
+\end{figure}
+
+\item Write out and simplify the Boolean expression for circuit 1.
+
+\item Write out the full truth table for circuit 1 based on the Boolean expression you found in part (a).
+
+\item What is circuit 1 called?
+\pagebreak
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*)]
+\item  THING
+\item   Truth Table \begin{center}
+    \begin{tabular}{c c c | c}
+    I0 & I1 & A & Q \\ \hline
+    0  & 0  & 0 & 0\\ 
+    1  & 1  & 0 & 1\\
+    0  & 1  & 1 & 0\\
+    1  & 0  & 1 & 1\\
+    \end{tabular}
+    \end{center}
+\item   This is a MUX!
+\end{enumerate}
+\end{solution}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/circuit.png}
+\caption{Circuit 2 for parts (d) (e)}
+\end{figure}
+\item Write out and simplify the Boolean expression for circuit 2.
+
+\item Write out the full truth table for circuit 2 based on the Boolean expression you found in part (d).
+
+\item What inputs make the output of circuit 2 always 1?
+
+\item What inputs make the output of circuit 2 always 0?
+
+\end{enumerate}
+
+\begin{solution}
+\begin{enumerate}[label=(\alph*)]
+\item  THING
+\item   Truth Table \begin{center}
+    \begin{tabular}{c c c c | c}
+    A & B & C & D & output\\ \hline
+    0 & 0 & 0 & D & output\\ 
+    0 & 1 & 1 & D & output \\
+    1 & 0 & 1 & D & output \\ 
+    1 & 1 & 0 & D & output \\
+    \end{tabular}
+    \end{center}
+\item   inputs
+\item   inputs
+\end{enumerate}
+\end{solution}
+
+\section*{Problem 3: Verilog}
+For each example, identify the error in the Verilog code and suggest a fix. You don't have to rewrite the entire Verilog unless you think that's the most succinct \& clear way to answer.
+
+\begin{minted}{verilog}
+module example_one(
+	input [1:0] a,
+	input b, c,
+	output x
+);
+	always @(*) begin
+	    case (a)
+	        2'b00 : x = b;
+	        2'b01 : x = c;
+	        2'b11 : x = b & c;
+	        2'b10 : x = b | c;
+	    endcase
+	end
+endmodule
+\end{minted}
+
+\begin{solution}
+output x should be reg x. x is being assigned within an always block. 
+\end{solution}
+
+\begin{minted}{verilog}
+module example_two(
+	input a, b, c,
+	output reg [1:0] x
+);
+    always @(*) begin
+    	if (a & b & c) begin
+    		x = 3;
+    	end
+    	else if (a & b) begin
+    		x = 2;
+    	end
+    	else if (c) begin
+    		x = 1;
+    	end
+    end
+endmodule
+\end{minted}
+
+\begin{solution}
+Include an else case to catch all other cases or 
+\end{solution}
+
+\item \begin{minted}{verilog}
+module example_three(
+	input [1:0] a,
+	input toggle, sel, 
+	output reg x
+);
+    always @(toggle) begin
+        if (sel) begin
+            x = a[1];
+        end
+        else if (!sel) begin
+    	x = a[0];
+        end
+    end
+endmodule
+\end{minted}
+\begin{solution}
+just talk
+\end{solution}
+
+\section*{Problem 4: Circuit Drawing! (251 Only)}
+Draw a circuit that can realize an arbitrary 2 input function of signals A and B. 
+
+https://github.com/EECS150/eecs151_teaching/blob/master/homework/sp18/hw1/hw1_solution.pdf
+
+https://github.com/EECS150/eecs151_teaching/blob/master/homework/sp18/hw1/hw1_solution.pdf
+
+\pagebreak
+\section*{Problem 5: Simplify, Simplify, Simplify (251 Only)}
+Simplify the following expressions:
+https://math.stackexchange.com/questions/2354936/complex-boolean-simplification
+\begin{enumerate}[label=(\alph*)]
+\item $(A + B)(A + C)$
+\vspace{60mm}
+\item $\overline{(A + B)}(A + \overline{B}C)\overline{(A + CB)}$
+\vspace{60mm}
+\item ($(\overline{A})(\overline{B})(\overline{C}) + \overline{A})(\overline{B})(C) + \overline{A}B\overline{C} + (A)(\overline{B})(\overline{C}) + (A)(\overline{B})C$
+\end{enumerate}
+
+\section*{Problem 5: Simplify, Simplify, Simplify (251 Only)}
+Simplify the following expressions:
+
+\begin{enumerate}[label=(\alph*)]
+\item $(A + B)(A + C)$
+
+\begin{solution}
+$(A + B)(A + C)$
+\end{solution}
+
+\item $\overline{(A + B)}(A + \overline{B}C)\overline{(A + CB)}$
+
+\begin{solution}
+$\overline{(A + B)}(A + \overline{B}C)\overline{(A + CB)}$
+\end{solution}
+
+\item $(\overline{A})(\overline{B})(\overline{C}) + (\overline{A})(\overline{B})(C) + (\overline{A})(B)(\overline{C}) + (A)(\overline{B})(\overline{C}) + (A)(\overline{B})(C)$
+
+\begin{solution}
+$(\overline{A})(\overline{B})(\overline{C}) + (\overline{A})(\overline{B})(C) + (\overline{A})(B)(\overline{C}) + (A)(\overline{B})(\overline{C}) + (A)(\overline{B})(C)$
+\end{solution}
+
+\end{enumerate}
+
+
+\section*{Problem 2: What's that Circuit!}
+\begin{enumerate}[label=(\alph*)]
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.6\textwidth]{figs/mux.png}
+\end{figure}
+
+\item Write out and simplify the Boolean expression for the circuit above.
+
+\vspace{40mm}
+
+\item Write out the full truth table for the circuit above based on the Boolean expression you found in part (a).
+
+\vspace{50mm}
+
+\item What is the circuit above called?
+\end{enumerate}
+\pagebreak
+
+
+\section*{Problem 2: Circuit Drawing!}
+Draw a circuit that can realize any arbitrary 2 input function of signals A and B. Provide a truth table as well. You are allowed to use other signals beyond A and B.
+
+\end{document}
+
